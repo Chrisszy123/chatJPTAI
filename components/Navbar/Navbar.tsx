@@ -6,12 +6,13 @@ import { signIn, signOut, useSession, getProviders } from "next-auth/react";
 
 const Navbar = () => {
   const isUserLoggedIn = true;
-  const [provider, setProvider] = useState(null);
+  const [provider, setProvider] = useState<any>(null);
   const [toggleDropdown, setToggleDropdown] = useState(false);
 
   useEffect(() => {
     const setProviders = async () => {
       const response = await getProviders();
+      // the type from getProvider() is not inBuilt and getProvider is an external dependency
       setProvider(response);
     };
     setProviders();
@@ -86,6 +87,28 @@ const Navbar = () => {
             />
             {toggleDropdown && (
               <div className="dropdown">
+                <Link
+                  href="/profile"
+                  className="dropdown_link"
+                  onClick={() => setToggleDropdown(false)}
+                >
+                  My Profile
+                </Link>
+                <Link
+                  href="/create-prompt"
+                  className="dropdown_link capitalize"
+                  onClick={() => setToggleDropdown(false)}
+                >
+                  create post
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setToggleDropdown(false);
+                    signOut();
+                  }}
+                  className="black_btn mt-5 w-full capitalize"
+                >sign out</button>
               </div>
             )}
           </div>
